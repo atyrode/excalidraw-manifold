@@ -50,23 +50,6 @@ const RE_REDDIT =
 const RE_REDDIT_EMBED =
   /^<blockquote[\s\S]*?\shref=["'](https?:\/\/(?:www\.)?reddit\.com\/[^"']*)/i;
 
-const ALLOWED_DOMAINS = new Set([
-  "youtube.com",
-  "youtu.be",
-  "vimeo.com",
-  "player.vimeo.com",
-  "figma.com",
-  "link.excalidraw.com",
-  "gist.github.com",
-  "twitter.com",
-  "x.com",
-  "*.simplepdf.eu",
-  "stackblitz.com",
-  "val.town",
-  "giphy.com",
-  "reddit.com",
-]);
-
 const ALLOW_SAME_ORIGIN = new Set([
   "youtube.com",
   "youtu.be",
@@ -356,7 +339,7 @@ const matchHostname = (
     const bareDomain = hostname.replace(/^www\./, "");
 
     if (allowedHostnames instanceof Set) {
-      if (ALLOWED_DOMAINS.has(bareDomain)) {
+      if (allowedHostnames.has(bareDomain)) {
         return bareDomain;
       }
 
@@ -364,7 +347,7 @@ const matchHostname = (
         /^([^.]+)/,
         "*",
       );
-      if (ALLOWED_DOMAINS.has(bareDomainWithFirstSubdomainWildcarded)) {
+      if (allowedHostnames.has(bareDomainWithFirstSubdomainWildcarded)) {
         return bareDomainWithFirstSubdomainWildcarded;
       }
       return null;
@@ -440,5 +423,10 @@ export const embeddableURLValidator = (
     }
   }
 
-  return !!matchHostname(url, ALLOWED_DOMAINS);
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
 };
