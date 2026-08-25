@@ -38,7 +38,9 @@ export const getClientColor = (
   const saturation = 100;
   const lightness = 83;
 
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  return (
+    collaborator?.color?.background ?? `hsl(${hue}, ${saturation}%, ${lightness}%)`
+  );
 };
 
 /**
