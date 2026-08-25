@@ -879,7 +879,7 @@ class App extends React.Component<AppProps, AppState> {
         newElement: null,
         selectionElement: null,
       });
-    }, 100);
+    }, element.customData?.fullInteractionTarget === true ? 0 : 100);
 
     if (isIframeElement(element)) {
       return;
@@ -952,10 +952,15 @@ class App extends React.Component<AppProps, AppState> {
       (this.state.activeEmbeddable?.element !== el ||
         this.state.activeEmbeddable?.state === "hover" ||
         !this.state.activeEmbeddable) &&
-      sceneX >= el.x + el.width / 3 &&
-      sceneX <= el.x + (2 * el.width) / 3 &&
-      sceneY >= el.y + el.height / 3 &&
-      sceneY <= el.y + (2 * el.height) / 3
+      (el.customData?.fullInteractionTarget === true
+        ? sceneX >= el.x &&
+          sceneX <= el.x + el.width &&
+          sceneY >= el.y &&
+          sceneY <= el.y + el.height
+        : sceneX >= el.x + el.width / 3 &&
+          sceneX <= el.x + (2 * el.width) / 3 &&
+          sceneY >= el.y + el.height / 3 &&
+          sceneY <= el.y + (2 * el.height) / 3)
     );
   }
 
@@ -1245,7 +1250,7 @@ class App extends React.Component<AppProps, AppState> {
                     : POINTER_EVENTS.disabled,
                 }}
               >
-                {isHovered && (
+                {isHovered && el.customData?.fullInteractionTarget !== true && (
                   <div className="excalidraw__embeddable-hint">
                     {t("buttons.embeddableInteractionButton")}
                   </div>
@@ -6044,6 +6049,7 @@ class App extends React.Component<AppProps, AppState> {
       if (
         hitElement &&
         (hitElement.link || isEmbeddableElement(hitElement)) &&
+        hitElement.customData?.showHyperlinkIcon !== false &&
         this.state.selectedElementIds[hitElement.id] &&
         !this.state.contextMenu &&
         !this.state.showHyperlinkPopup
@@ -7329,7 +7335,8 @@ class App extends React.Component<AppProps, AppState> {
                     this,
                   ),
                   showHyperlinkPopup:
-                    hitElement.link || isEmbeddableElement(hitElement)
+                    (hitElement.link || isEmbeddableElement(hitElement)) &&
+                    hitElement.customData?.showHyperlinkIcon !== false
                       ? "info"
                       : false,
                 };
@@ -8758,7 +8765,9 @@ class App extends React.Component<AppProps, AppState> {
               showHyperlinkPopup:
                 elementsWithinSelection.length === 1 &&
                 (elementsWithinSelection[0].link ||
-                  isEmbeddableElement(elementsWithinSelection[0]))
+                  isEmbeddableElement(elementsWithinSelection[0])) &&
+                elementsWithinSelection[0].customData?.showHyperlinkIcon !==
+                  false
                   ? "info"
                   : false,
             };
@@ -9503,7 +9512,8 @@ class App extends React.Component<AppProps, AppState> {
                   this,
                 ),
                 showHyperlinkPopup:
-                  hitElement.link || isEmbeddableElement(hitElement)
+                  (hitElement.link || isEmbeddableElement(hitElement)) &&
+                  hitElement.customData?.showHyperlinkIcon !== false
                     ? "info"
                     : false,
               };
@@ -9659,9 +9669,11 @@ class App extends React.Component<AppProps, AppState> {
         hitElement &&
         this.lastPointerUpEvent &&
         this.lastPointerDownEvent &&
-        this.lastPointerUpEvent.timeStamp -
+        (this.lastPointerUpEvent.timeStamp -
           this.lastPointerDownEvent.timeStamp <
-          300 &&
+          300 ||
+          (hitElement.customData?.fullInteractionTarget === true &&
+            !pointerDownState.drag.hasOccurred)) &&
         gesture.pointers.size <= 1 &&
         isIframeLikeElement(hitElement) &&
         this.isIframeLikeElementCenter(
