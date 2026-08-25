@@ -3,13 +3,10 @@ import { embeddableURLValidator } from "./embeddable";
 describe("embeddableURLValidator", () => {
   it("accepts arbitrary HTTP and HTTPS URLs by default", () => {
     expect(
-      embeddableURLValidator(
-        "https://vm.manifold.tyrode.dev/vnc.html",
-        undefined,
-      ),
+      embeddableURLValidator("https://widgets.example/dashboard", undefined),
     ).toBe(true);
     expect(
-      embeddableURLValidator("http://127.0.0.1:6080/vnc.html", undefined),
+      embeddableURLValidator("http://docs.example/guide", undefined),
     ).toBe(true);
   });
 
