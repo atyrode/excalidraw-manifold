@@ -5,8 +5,15 @@ import type { UIAppState } from "../types";
 export const showSelectedShapeActions = (
   appState: UIAppState,
   elements: readonly NonDeletedExcalidrawElement[],
-) =>
-  Boolean(
+) => {
+  const selected = getSelectedElements(elements, appState);
+  if (
+    selected.length > 0 &&
+    selected.every((el) => el.customData?.showShapeActions === false)
+  ) {
+    return false;
+  }
+  return Boolean(
     !appState.viewModeEnabled &&
       appState.openDialog?.name !== "elementLinkSelector" &&
       ((appState.activeTool.type !== "custom" &&
@@ -15,5 +22,6 @@ export const showSelectedShapeActions = (
             appState.activeTool.type !== "eraser" &&
             appState.activeTool.type !== "hand" &&
             appState.activeTool.type !== "laser"))) ||
-        getSelectedElements(elements, appState).length),
+        selected.length),
   );
+};
