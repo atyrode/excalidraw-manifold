@@ -58,6 +58,9 @@ export const isPointHittingLinkIcon = (
   appState: AppState,
   [x, y]: GlobalPoint,
 ) => {
+  if (element.customData?.showHyperlinkIcon === false) {
+    return false;
+  }
   const threshold = 4 / appState.zoom.value;
   const [x1, y1, x2, y2] = getElementAbsoluteCoords(element, elementsMap);
   const [linkX, linkY, linkWidth, linkHeight] = getLinkHandleFromCoords(

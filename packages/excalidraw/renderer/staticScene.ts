@@ -151,7 +151,11 @@ const renderLinkIcon = (
   appState: StaticCanvasAppState,
   elementsMap: ElementsMap,
 ) => {
-  if (element.link && !appState.selectedElementIds[element.id]) {
+  if (
+    element.link &&
+    element.customData?.showHyperlinkIcon !== false &&
+    !appState.selectedElementIds[element.id]
+  ) {
     const [x1, y1, x2, y2] = getElementAbsoluteCoords(element, elementsMap);
     const [x, y, width, height] = getLinkHandleFromCoords(
       [x1, y1, x2, y2],
