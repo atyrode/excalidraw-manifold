@@ -10,8 +10,9 @@ is explicit in the consumer's dependency URL. Versioning: `0.18.1-manifold.N`.
 
 ## Manifold-owned changes
 
-Rule: per-element `customData` gates only — stock behavior when the flag is absent,
-additive diffs only, never restructure upstream code.
+Rule: per-element `customData` gates and additive `UIOptions` chrome-suppression
+flags (default = stock) only — stock behavior when the flag is absent, additive
+diffs only, never restructure upstream code.
 
 - **Cursor color** (`clients.ts` `getClientColor`): returns
   `collaborator?.color?.background` when present; connId-hash HSL only as fallback.
@@ -32,6 +33,8 @@ additive diffs only, never restructure upstream code.
   `element/showSelectedShapeActions.ts` returns `false` when the selection is
   non-empty and every selected element carries the flag; mixed selections still show
   the panel.
+- **Chrome suppression** (`UIOptions.userList: false`, `UIOptions.toolbar: false`):
+  host-app replaces the built-in collaborator stack / shapes toolbar with its own UI.
 
 ## Release procedure
 

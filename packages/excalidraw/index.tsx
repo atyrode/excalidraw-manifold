@@ -67,6 +67,8 @@ const ExcalidrawBase = (props: ExcalidrawProps) => {
     tools: {
       image: props.UIOptions?.tools?.image ?? true,
     },
+    userList: props.UIOptions?.userList ?? true,
+    toolbar: props.UIOptions?.toolbar ?? true,
   };
 
   if (canvasActions?.export) {

@@ -292,6 +292,8 @@ export const DEFAULT_UI_OPTIONS: AppProps["UIOptions"] = {
   tools: {
     image: true,
   },
+  userList: true,
+  toolbar: true,
 };
 
 // breakpoints

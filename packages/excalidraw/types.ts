@@ -627,6 +627,10 @@ export type UIOptions = Partial<{
   tools: {
     image: boolean;
   };
+  /** manifold: set false to suppress the built-in collaborator avatar stack (host renders its own). Default true = stock. */
+  userList: boolean;
+  /** manifold: set false to suppress the built-in shapes toolbar (host renders its own). Default true = stock. */
+  toolbar: boolean;
   /** @deprecated does nothing. Will be removed in 0.15 */
   welcomeScreen?: boolean;
 }>;

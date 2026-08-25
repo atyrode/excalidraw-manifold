@@ -75,51 +75,56 @@ export const MobileMenu = ({
     return (
       <FixedSideContainer side="top" className="App-top-bar">
         {renderWelcomeScreen && <WelcomeScreenCenterTunnel.Out />}
-        <Section heading="shapes">
-          {(heading: React.ReactNode) => (
-            <Stack.Col gap={4} align="center">
-              <Stack.Row gap={1} className="App-toolbar-container">
-                <Island padding={1} className="App-toolbar App-toolbar--mobile">
-                  {heading}
-                  <Stack.Row gap={1}>
-                    <ShapesSwitcher
-                      appState={appState}
-                      activeTool={appState.activeTool}
-                      UIOptions={UIOptions}
-                      app={app}
+        {UIOptions.toolbar !== false && (
+          <Section heading="shapes">
+            {(heading: React.ReactNode) => (
+              <Stack.Col gap={4} align="center">
+                <Stack.Row gap={1} className="App-toolbar-container">
+                  <Island
+                    padding={1}
+                    className="App-toolbar App-toolbar--mobile"
+                  >
+                    {heading}
+                    <Stack.Row gap={1}>
+                      <ShapesSwitcher
+                        appState={appState}
+                        activeTool={appState.activeTool}
+                        UIOptions={UIOptions}
+                        app={app}
+                      />
+                    </Stack.Row>
+                  </Island>
+                  {renderTopRightUI && renderTopRightUI(true, appState)}
+                  <div className="mobile-misc-tools-container">
+                    {!appState.viewModeEnabled &&
+                      appState.openDialog?.name !== "elementLinkSelector" && (
+                        <DefaultSidebarTriggerTunnel.Out />
+                      )}
+                    <PenModeButton
+                      checked={appState.penMode}
+                      onChange={() => onPenModeToggle(null)}
+                      title={t("toolBar.penMode")}
+                      isMobile
+                      penDetected={appState.penDetected}
                     />
-                  </Stack.Row>
-                </Island>
-                {renderTopRightUI && renderTopRightUI(true, appState)}
-                <div className="mobile-misc-tools-container">
-                  {!appState.viewModeEnabled &&
-                    appState.openDialog?.name !== "elementLinkSelector" && (
-                      <DefaultSidebarTriggerTunnel.Out />
-                    )}
-                  <PenModeButton
-                    checked={appState.penMode}
-                    onChange={() => onPenModeToggle(null)}
-                    title={t("toolBar.penMode")}
-                    isMobile
-                    penDetected={appState.penDetected}
-                  />
-                  <LockButton
-                    checked={appState.activeTool.locked}
-                    onChange={onLockToggle}
-                    title={t("toolBar.lock")}
-                    isMobile
-                  />
-                  <HandButton
-                    checked={isHandToolActive(appState)}
-                    onChange={() => onHandToolToggle()}
-                    title={t("toolBar.hand")}
-                    isMobile
-                  />
-                </div>
-              </Stack.Row>
-            </Stack.Col>
-          )}
-        </Section>
+                    <LockButton
+                      checked={appState.activeTool.locked}
+                      onChange={onLockToggle}
+                      title={t("toolBar.lock")}
+                      isMobile
+                    />
+                    <HandButton
+                      checked={isHandToolActive(appState)}
+                      onChange={() => onHandToolToggle()}
+                      title={t("toolBar.hand")}
+                      isMobile
+                    />
+                  </div>
+                </Stack.Row>
+              </Stack.Col>
+            )}
+          </Section>
+        )}
         <HintViewer
           appState={appState}
           isMobile={true}

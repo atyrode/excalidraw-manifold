@@ -239,7 +239,8 @@ const LayerUI = ({
             {renderCanvasActions()}
             {shouldRenderSelectedShapeActions && renderSelectedShapeActions()}
           </Stack.Col>
-          {!appState.viewModeEnabled &&
+          {UIOptions.toolbar !== false &&
+            !appState.viewModeEnabled &&
             appState.openDialog?.name !== "elementLinkSelector" && (
               <Section heading="shapes" className="shapes-section">
                 {(heading: React.ReactNode) => (
@@ -332,12 +333,13 @@ const LayerUI = ({
               },
             )}
           >
-            {appState.collaborators.size > 0 && (
-              <UserList
-                collaborators={appState.collaborators}
-                userToFollow={appState.userToFollow?.socketId || null}
-              />
-            )}
+            {UIOptions.userList !== false &&
+              appState.collaborators.size > 0 && (
+                <UserList
+                  collaborators={appState.collaborators}
+                  userToFollow={appState.userToFollow?.socketId || null}
+                />
+              )}
             {renderTopRightUI?.(device.editor.isMobile, appState)}
             {!appState.viewModeEnabled &&
               appState.openDialog?.name !== "elementLinkSelector" &&
